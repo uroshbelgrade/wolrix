@@ -18,13 +18,12 @@ export function DynamicCursor() {
       cursorY.set(e.clientY);
     };
 
-    window.addEventListener('mousemove', moveCursor);
-    
     const handleHover = () => setIsHovered(true);
     const handleUnhover = () => setIsHovered(false);
     
     const interactiveElements = document.querySelectorAll('button, a, [data-interactive]');
     
+    window.addEventListener('mousemove', moveCursor);
     interactiveElements.forEach(el => {
       el.addEventListener('mouseenter', handleHover);
       el.addEventListener('mouseleave', handleUnhover);
@@ -37,7 +36,7 @@ export function DynamicCursor() {
         el.removeEventListener('mouseleave', handleUnhover);
       });
     };
-  }, [cursorX, cursorY]);
+  }, []);
 
   return (
     <motion.div

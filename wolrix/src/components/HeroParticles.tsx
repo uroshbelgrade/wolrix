@@ -5,6 +5,27 @@ import { useFrame, RootState } from '@react-three/fiber';
 import { Points, PointMaterial } from '@react-three/drei';
 import * as THREE from 'three';
 
+interface ParticleProps {
+  positions: Float32Array;
+  color: string;
+  size: number;
+}
+
+function ParticleGroup({ positions, color, size }: ParticleProps) {
+  return (
+    <Points positions={positions} stride={3} frustumCulled={false}>
+      <PointMaterial
+        transparent
+        color={color}
+        size={size}
+        sizeAttenuation={true}
+        depthWrite={false}
+        blending={THREE.AdditiveBlending}
+      />
+    </Points>
+  );
+}
+
 export function HeroParticles() {
   const ref = useRef<THREE.Points>(null);
   const mouseRef = useRef({ x: 0, y: 0 });
@@ -92,40 +113,13 @@ export function HeroParticles() {
       />
 
       {/* Close layer - bright and responsive */}
-      <Points ref={ref} positions={particles1} stride={3} frustumCulled={false}>
-        <PointMaterial
-          transparent
-          color="#fff"
-          size={0.005}
-          sizeAttenuation={true}
-          depthWrite={false}
-          blending={THREE.AdditiveBlending}
-        />
-      </Points>
+      <ParticleGroup positions={particles1} color="#fff" size={0.005} />
 
       {/* Mid layer - subtle movement */}
-      <Points positions={particles2} stride={3} frustumCulled={false}>
-        <PointMaterial
-          transparent
-          color="#aaa"
-          size={0.003}
-          sizeAttenuation={true}
-          depthWrite={false}
-          blending={THREE.AdditiveBlending}
-        />
-      </Points>
+      <ParticleGroup positions={particles2} color="#aaa" size={0.003} />
 
       {/* Far layer - ambient particles */}
-      <Points positions={particles3} stride={3} frustumCulled={false}>
-        <PointMaterial
-          transparent
-          color="#666"
-          size={0.002}
-          sizeAttenuation={true}
-          depthWrite={false}
-          blending={THREE.AdditiveBlending}
-        />
-      </Points>
+      <ParticleGroup positions={particles3} color="#666" size={0.002} />
 
       {/* Ambient glow */}
       <mesh position={[0, 0, -2]} rotation={[0, 0, Math.PI / 4]}>

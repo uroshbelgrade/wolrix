@@ -12,6 +12,7 @@ import { ContactSection } from '@/components/sections/ContactSection';
 import { HeroParticles } from '@/components/HeroParticles';
 import { PhilosophySection } from '@/components/sections/PhilosophySection';
 import { SectionWrapper } from '@/components/SectionWrapper';
+import { MagneticButton } from '@/components/MagneticButton';
 
 export default function Home() {
   return (
@@ -164,12 +165,12 @@ export default function Home() {
                   transition={{ delay: 0.6 }}
                   className="flex gap-6"
                 >
-                  <button className="px-8 py-4 border border-border hover:bg-hover transition-colors rounded-full">
+                  <MagneticButton className="border border-border hover:bg-hover bg-transparent">
                     Our Philosophy
-                  </button>
-                  <button className="px-8 py-4 bg-foreground text-background hover:bg-muted transition-colors rounded-full">
+                  </MagneticButton>
+                  <MagneticButton>
                     Join the Elite
-                  </button>
+                  </MagneticButton>
                 </motion.div>
               </div>
             </motion.div>

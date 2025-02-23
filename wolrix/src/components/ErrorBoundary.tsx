@@ -15,8 +15,7 @@ export class ErrorBoundary extends Component<Props, State> {
     hasError: false
   };
 
-  // Using underscore prefix is a TypeScript convention for unused parameters
-  public static getDerivedStateFromError(_: Error): State {
+  public static getDerivedStateFromError(): State {
     return { hasError: true };
   }
 
