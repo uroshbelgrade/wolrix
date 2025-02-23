@@ -71,9 +71,9 @@ export function WhySection() {
           className="mt-20 text-center"
         >
           <p className="text-xl text-muted max-w-3xl mx-auto">
-            "We're not just adapting to change—we're driving it. Our integrated approach 
+            &ldquo;We&apos;re not just adapting to change—we&apos;re driving it. Our integrated approach 
             combines world-class consulting, transformative education, and strategic 
-            investments to create unprecedented value for our clients and partners."
+            investments to create unprecedented value for our clients and partners.&rdquo;
           </p>
           <div className="mt-4 text-sm font-medium">CEO, Wolrix Group</div>
         </motion.div>
