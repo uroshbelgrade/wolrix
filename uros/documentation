@@ -1,0 +1,1895 @@
+
+
+
+
+Cedarx System
+
+User Guide
+
+Client Interface Development Version
+1.2.4
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Contents
+LIST OF FIGURES	3
+LIST OF TABLES	3
+ACRONYMS	3
+DOCUMENT CONTROL	3
+PART 1 CLIENT INTERFACE DEVELOPMENT	4
+CLIENT INTERFACE CODING	4
+Introduction	4
+WCF Service Method	4
+Part 2 XML DOCUMENT SPECIFICATIONS	8
+XML File Format	8
+GetProductCatalog	8
+Send Order Request	10
+Send Order Successful Response	17
+Send Order Failed Response	18
+Get Order Status	20
+        Cancel Order……………………………………………………………………………………………………………………………  22
+Error List	24
+Support Programs	25
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+LIST OF FIGURES 
+
+1.1
+Introduction to WCF Service
+4
+
+
+LIST OF TABLES
+
+1.1
+GetProductCatalog Request Method
+5
+1.2
+SendOrder Request Method
+6
+1.3
+GetOrderStatus Request Method
+7
+1.4
+GetRefillStatus Request Method
+7
+1.5
+GetRefillStatus Response Method
+8
+2.1
+GetProductCatalog Response
+9
+2.2
+SendOrder Request XML
+11
+2.3
+SendOrder Successful Response
+17
+2.4
+SendOrder Failed Response
+18
+2.5
+GetOrderStatus Response
+20
+
+
+2.6
+CancelOrder Request Method
+22
+2.7
+CancelOrder Response
+23
+2.8
+Error List
+24
+
+
+ACRONYMS
+XML- Extensible Markup Language
+URL- Uniform Resource Locator
+DOCUMENT CONTROL
+1.1
+Initial Version
+1.0.0
+
+
+1.2
+Client Change
+1.0.1
+
+
+1.3
+Local Client Change
+1.0.2
+27/11/2015
+
+
+(Physician Tag added in XML at Order level)
+
+
+
+
+1.4
+Pet Name, Pet Sex and Pet DOB Change
+1.0.4
+16/12/2015
+1.5
+Added Delivery type and branch collection detail
+1.0.5
+16/06/2016
+1.6
+Added new columns Phone, Email & Mobile details
+1.0.6
+12/05/2017
+1.7
+Added new field NHS and NHSNO
+1.0.7
+22/05/2017
+1.8
+Updated Tracking Request field
+1.0.8
+07/06/2017
+1.9
+9 Added new field Refill	
+1.0.9
+07/06/2017
+
+PART 1 CLIENT INTERFACE DEVELOPMENT
+
+CLIENT INTERFACE CODING
+Introduction
+The general architecture of WCF service is shown in figure 1.1. Client will send request message to server and based on that request the server responds data to client. The format of message will be XML.
+
+Figure 1.1 Introduction to WCF Service
+
+WCF service consists of REST Architecture. Input and Output data will be pure XML. The parameters of that service method could be of string, int, byte array or some other data type. Service methods could be of HttpGet, HttpPost or some other Http verbs. If the method is declared as HttpGet that client can retrieve data by calling this method using appropriate parameters.
+
+WCF Service Method
+CedaRx REST API consists of three methods:
+GetProductCatalog
+SendOrder
+GetOrderStatus
+Authorization
+Client need to pass key in header of request in order to send and receive data.
+XKey: bdX5frTebdj4jnfjnjdvn65ejndlf
+
+
+
+
+
+GetProductCatalog
+GetProductCatalog method consists list of products under Cedarwood Pharmacy. It helps client to know more about product information e.g. Product UK Name, strength, Pack size, Drug Form, Drug ingredient etc. Product catalog method retrieve List of product information as well as specific product information base on client input parameter. While requesting product catalog method client need to pass product ID and Only My product parameters. Client is also able to view Product Negotiated price, Promotional price and reserved stock details.
+
+[OperationContract]
+
+[WebInvoke(Method = "GET", RequestFormat
+
+= WebMessageFormat.Xml, ResponseFormat
+
+=
+
+WebMessageFormat.Xml, UriTemplate =
+
+"/getProductCatalog/{productID}/{onlyMyProduct}")]
+
+List<wsProductCatalog> GetProductCatalog(String productID,
+
+String onlyMyProduct);
+
+
+
+1.1 
+Request URL
+ProductID
+My Product
+Description
+https://www.cedarx.co.uk/CedaRxWCF/ServiceCedaRx.svc/getProductCatalog/0/0
+0
+0
+Here,input parameter productID with value 0 indicates that list of all products and Parameter only MyProduct with value 0 indicates that all products either activated or not activated for a client.
+https://www.cedarx.co.uk/CedaRxWCF/ServiceCedaRx.svc/getProductCatalog/0/1
+0
+1
+Here,input parameter productID with value 0 indicates that list of all products and parameter only MyProduct with value 1 indicates that only my activated product list.
+https://www.cedarx.co.uk/CedaRxWCF/ServiceCedaRx.svc/getProductCatalog/3/0
+3
+0
+Here,input parameter productID with value 3 indicates that CedaRX product ID 3 details and parameter onlyMyProduct with value 0 indicates that even product is not activated for a client.
+https://www.cedarx.co.uk/CedaRxWCF/ServiceCedaRx.svc/getProductCatalog/3/1
+3
+1
+It will return details of product having ProductID = 3 and It also consist details of negotiation and ringfence of product
+
+
+
+
+
+SendOrder
+SendOrder method help client to exchange order detail with Cedarwood pharmacy. SendOrder is POST method and its allow client to pass order details, shipping detail, patient information and medical history for a patient. It also allows client to pass prescription and invoice documents. Sent order method support to send single order as well as multiple order on same request. CedaRX system will sent Response to client. Client will get CedaRX system generated CedaRxOrderID if send order successfully accept or client client will get Error Message with corrective action.
+[OperationContract]
+
+[WebInvoke(Method = "POST", RequestFormat = WebMessageFormat.Xml,
+ResponseFormat = WebMessageFormat.Xml,
+
+UriTemplate = "SendOrder")] wsSendOrderResult
+
+SendOrder(Stream XMLdataStream);
+
+1.2
+Request URL
+Description
+Output
+https://www.cedarx.co.uk/CedaRxWCF/ServiceCedaRx.svc/SendOrder
+
+XML Format: application/x-www-form-urlencoded
+Client need to send necessary data along with request URL. This data will be validated at server side. If data are valid then that order will be accepted otherwise client will get list of errors which needs to be corrected and resubmit that order. Detailed information of data which needs to be passed with service url are shown in table 2.2 (<- Click here)
+Based on validation of data which were provided by client while requesting this method, if order went successfully then client will get CedaRxOrderID in response which will be useful in getOrderStatus method. Detailed information of successful response is shown in table 2.3 (<- Click here). If data are failed to pass validation, then client will get list of errors which needs to be corrected and resubmit the order. Detailed information of failed response is shown in table 2.4 (<- Click here).
+
+
+
+
+GetOrderStatus
+Getorderstatus method will help client to check their order status. Client can call this method either passing clientOrderID or CedaRxOrderID. Client will get shipping and invoice information if order has been processed successfully.
+[OperationContract]
+
+[WebInvoke(Method = "GET", RequestFormat = WebMessageFormat.Xml,
+ResponseFormat = WebMessageFormat.Xml,
+UriTemplate =
+
+"/getOrderStatus/{clientOrderID}/{cedarxOrderID}")]
+
+wsSendOrderStatus GetOrderStatus(String clientOrderID, String cedarxOrderID);
+
+1.3 
+Request URL
+Description
+Output
+https://www.cedarx.co.uk/CedaRxWCF/ServiceCedaRx.svc/getOrderStatus/0/159
+
+XML Format: application/x-www-form-urlencoded
+Client will pass either clientOrderID or cedarxOrderID to get status of the order. If the data which was sent in sendOrder method contains some validation error, then client need to be pass clientOrderID with cedarx-OrderID value as 0 to fetch errors in that orders which needs to be corrected and resubmit that order to generate cedarxOrderID.
+If status of the order is SH or IV then will get shipping and invoice information in response. Detailed information of order status response is shown in table 2.5 (<- Click here).
+
+
+
+GetRefillStatus Request Method
+Getrefillstatus method will help client to check their refill pending quantity by patient level for all the products.
+[OperationContract]
+
+[WebInvoke(Method = "GET", RequestFormat = WebMessageFormat.Xml,
+ResponseFormat = WebMessageFormat.Xml,
+UriTemplate =
+
+"/getRefillStatus/{ ClientPatientID}")]
+
+WsGetRefillStatus(String ClientPatientID);
+
+
+
+
+1.4 
+Request URL
+Description
+Output
+https://www.cedarx.co.uk/CedaRxWCF/ServiceCedaRx.svc/getRefillStatus/159
+
+XML Format: application/x-www-form-urlencoded
+Client will pass ClientPatientID to get Pending Refill quantity for all the products of the patient.
+If ClientPatientID is valid for HIMS than system will send ProductId, Product description and Pending Refill quantity.
+
+
+GetRefillStatus Success Response
+
+<RefillStatus xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
+    <PatientName>HardikD Patel</PatientName>
+    <Products>
+        <Product>
+            <ProductID>1151</ProductID>
+            <ProductName>Zocor</ProductName>
+            <ProductStrength>80mg</ProductStrength>
+            <ProductType>OTC</ProductType>
+            <RefillQty>6</RefillQty>
+            <OrderDate>07/03/2019</OrderDate>
+            <LastPrescriptionID>2989326</LastPrescriptionID >
+            <ProductStatus>Active</ ProductStatus >
+        </Product>        
+    </Products>
+    <SendOrderErrors i:nil="true"/>
+</RefillStatus>
+
+GetRefillStatus Error Response
+
+<RefillStatus xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
+    <PatientName i:nil="true"/>
+    <Products i:nil="true"/>
+    <SendOrderErrors>
+        <SendOrderError>
+            <ErrorCode>008</ErrorCode>
+            <ErrorMessage>Invalid Parameter Values: PatientId not exist for Hims UK</ErrorMessage>
+        </SendOrderError>
+    </SendOrderErrors>
+</RefillStatus>
+
+
+
+Part 2 XML DOCUMENT SPECIFICATIONS
+
+XML File Format
+Client will send and receive data in pure XML format.
+
+GetProductCatalog
+
+<ArrayOfProduct xmlns:i ="http://www.w3.org/2001/XMLSchema-instance">
+
+<Product>
+		      <ProductID>29</ProductID>
+
+<ProductNameUK>ABILIFY</ ProductNameUK> 
+<ProductNameUS>ABILIFY DISCMELT</ProductNameUS > <ProductName>ABIL28D10</ProductName>
+<Stock>InStock</Stock> <DrugActiveIngredient>ARIPIPRAZOLE</DrugActiveIngredient>
+<DrugType>Generic</DrugType>
+<ManufacturerName>Otuska Pharmaceuticals(UK) Ltd</ManufacturerName>
+<DrugStrength>15mg</DrugStrength> <DrugPackSize>28</DrugPackSize>
+
+<ProductNegotiate>
+<ProductNegotiateRequestPrice>15</ProductNegotiateRequestPrice>
+<ProductNegotiateResponsePrice></ProductNegotiateResponsePrice>
+<ProductNegotiateStatus>Pending</ProductNegotiateStatus>
+<ProductNegotiateResponseDate></ProductNegotiateResponseDate>
+</ProductNegotiate> 
+
+<Ringfence> 
+<RingfenceQuantity>50</RingfenceQuantity>
+<RingfenceQuantityUsed>10</RingfenceQuantityUsed> <RingfenceStartDate>2015/02/11</RingfenceStartDate> <RingfenceEndDate>2015/02/21</RingfenceEndDate>
+<RingfenceStatus>Accept</RingfenceStatus> 
+</Ringfence>
+
+<TagFav>Yes</TagFav> <TagUnfav>No</TagUnfav>
+<Promotion>
+<PromotionName></ PromotionName>
+<PromotionPrice></ PromotionPrice>
+<PromotionStartDate></PromotionStartDate>
+<PromotionEndDate></PromotionEndDate> </Promotion>
+<SalePrice>3.75</SalePrice>
+
+<Product> <Product> <ProductID>43</ProductID>
+<ProductNameUK>Levetiracetam</ProductNameUK> <ProductNameUS>Levetiracetam</ProductNameUS>
+<ProductName>Omeprazole Capsules_master</ProductName>
+<Stock>InStock</Stock> <DrugActiveIngredient
+ARIPIPRAZOLE</DrugActiveIngredient> <DrugType>Generic</DrugType>
+<ManufacturerName>Otuska Pharmaceuticals(UK) Ltd</ManufacturerName>
+<DrugStrength>250mg</DrugStrength>
+<DrugPackSize>25</DrugPackSize>
+
+<ProductNegotiate> 
+<ProductNegotiateRequestPrice>15</ProductNegotiateRequestPrice>
+<ProductNegotiateResponsePrice></ProductNegotiateResponsePrice>
+<ProductNegotiateStatus>Pending</ProductNegotiateStatus>
+<ProductNegotiateResponseDate></ProductNegotiateResponseDate>
+
+</ProductNegotiate> 
+
+<Ringfence>
+<RingfenceQuantity>50</RingfenceQuantity>
+<RingfenceQuantityUsed>10</RingfenceQuantityUsed> <RingfenceStartDate>2015/02/11</RingfenceStartDate> <RingfenceEndDate>2015/02/21</RingfenceEndDate>
+<RingfenceStatus>Accept</RingfenceStatus> </Ringfence>
+<TagFav>Yes</TagFav> <TagUnfav>No</TagUnfav>
+
+<Promotion>
+<PromotionName></ PromotionName>
+<PromotionPrice></ PromotionPrice>
+<PromotionStartDate></ PromotionStartDate>
+<PromotionEndDate></PromotionEndDate> </Promotion>
+		      <SalePrice>110.00</SalePrice> <Product>
+   </ArrayOfProduct>
+
+
+2.1 GetProductCatalog
+XML Tag
+Value 
+Possible Values
+Description
+ArrayOfProduct
+
+
+
+
+
+
+Product
+
+
+
+
+
+
+ProductID
+29
+
+
+Product Unique ID
+ProductNameUK
+ABILIFY
+
+
+Product UK Name
+ProductNameUS
+ABILIFY DISCMELT
+
+
+Product US Name
+ProductName
+ABIL28D10
+
+
+Master Product Name
+Stock
+In Stock
+In Stock/ On Request/ Out of Stock
+Stock Information
+DrugActiveIngredient
+ARIPIPRAZOLE
+
+
+
+
+DrugType
+Generic
+Generic or any other type
+
+
+ManufacturerName
+Otsuka Pharmaceuticals
+
+
+
+
+DrugStrength
+15mg
+
+
+Product Strength
+DrugPackSize
+28
+10,20 etc
+Pack Size of Drug
+ProductNegotiate
+
+
+
+
+
+
+ProductNegotiateRequestPrice
+10
+
+
+Client Requested price of product
+ProductNegotiateResponsePrice
+12
+
+
+Response price from Cedarx
+ProductNegotiateStatus
+Pending
+Pending/ Accepted/ Rejected
+Requested price status of Cedarx
+ProductNegotiateResponseDate
+2018/02/12
+{YYYY/MM/DD}
+Negotiated Response Date- Accepted/ Rejected 
+Ringfence
+
+
+
+
+
+
+RingfenceQuantity
+50
+
+
+Ringfence Quantity of client
+RingfenceQuantityUsed
+10
+
+
+Ringfence Quantity used by client
+RingfenceStartDate
+2015/02/11
+{YYYY/MM/DD}
+Start Date of Ringfence
+RingfenceEndDate
+2015/02/21
+{YYYY/MM/DD}
+End Date of Ringfence
+RingfenceStatus
+Pending
+Pending/ Accepted/ Rejected/ Ignore
+Status of Ringfence
+TagFav
+Yes
+Yes/ No
+-
+TagUnfav
+No
+Yes/No
+-
+Promotion
+
+
+
+
+
+
+PromotionName
+Summer
+
+
+
+
+PromotionPrice
+3
+
+
+Price of Promotion
+PromotionStartDate
+2015/03/12
+{YYYY/MM/DD}
+Start Date of Promotion
+PromotionEndDate
+2015/04/12
+{YYYY/MM/DD}
+End Date of Promotion
+SalePrice
+3.75
+
+
+
+
+
+
+
+
+
+
+Send Order XML Request
+XML file contain single order detail or Multiple order details. Order can consist multiple products. Here, we consider ClientOrderID is the primary key and should be unique for each order. Inline attachment of documents such as invoice document underneath each order and prescription document underneath each product.
+<OrderTransmission>
+ <TransmissionParameters>
+  <Parameter Name="Version">1.0.1</Parameter>
+  <Parameter Name="OrderXMLType">DEFAULT</Parameter>
+  <Parameter Name="IgnoreCase">YES</Parameter>
+  <Parameter Name="AutoAttachDocument">YES</Parameter>
+  <Parameter Name="DocType">Base64</Parameter>
+  <Parameter Name="UniqueTransmissionID">1486743208</Parameter>
+  <Parameter Name="DTStampReceived">2017-06-15 10:13:28</Parameter>
+  <Parameter Name="NoOfOrdersSent">1</Parameter>
+ </TransmissionParameters>
+ <OrderSet>
+  <Order>
+   <ClientOrderID>HD8360080</ClientOrderID>
+   <ClientOrderDate>2017-06-15</ClientOrderDate>
+   <ClientOrderAffilliate>1</ClientOrderAffilliate>
+   <ClientNotes></ClientNotes>
+   <Reship>N</Reship>
+   <Refill>Y</Refill>
+   <Title>Mr</Title>
+   <FirstName>Mark</FirstName>
+   <MiddleName></MiddleName>
+   <LastName>Mortenson</LastName>
+   <BirthDate>1961-12-28</BirthDate>
+   <Gender>Male</Gender>
+   <Species>Human</Species>
+   <ClientPatientID>3527333</ClientPatientID>
+   <Address1>19390 181st Ave NW</Address1>
+   <Address2></Address2>
+   <Address3></Address3>
+   <Address4>Big Lake</Address4>
+   <Address5>MN</Address5>
+   <PostCode>55309</PostCode>
+   <Country>USA</Country>
+   <Height>5' 9"</Height>
+   <Weight>195</Weight>
+   <HeightUnit>Inch</HeightUnit>
+   <WeightUnit>Pounds</WeightUnit>
+   <Smoker>N</Smoker>
+   <Pregnant>N</Pregnant>
+   <BreastFeed>N</BreastFeed>
+   <Alcoholic></Alcoholic>
+   <MedicalCondition></MedicalCondition>
+   <DrugAllergies></DrugAllergies>
+   <Phone></Phone>
+   <Email>tytest@gmail.com</Email>
+   <Mobile>789456123</Mobile>
+   <NHS>N</NHS>
+   <NHSNO>456</NHSNO>
+   <Documents>
+    <document name="invoice-8360066.pdf" mime-type="application/pdf">
+    MDAwMCBuIAowMDAwMzE0NDc4IDAwMDAwIG4gCjAwMDAzMTQ1OTAgMDAwMDAgbiAKdHJhaWxlcgo8
+    PAogIC9Sb290IDIgMCBSCiAgL0luZm8gNCAwIFIKICAvSUQgWzxBNTI2OUUwRENCQjIxOEQ5MjdF
+    NTVBMjhEMkI5QTIyMT4gPEE1MjY5RTBEQ0JCMjE4RDkyN0U1NUEyOEQyQjlBMjIxPl0KICAvU2l6
+    ZSAyNwo+PgpzdGFydHhyZWYKMzE1MTY0CiUlRU9GCg==
+    </document>
+   </Documents>
+   <PatientShipping>
+    <ShippingAddress1>19390 181st Ave NW</ShippingAddress1>
+    <ShippingAddress2></ShippingAddress2>
+    <ShippingAddress3></ShippingAddress3>
+    <ShippingAddress4>Big Lake</ShippingAddress4>
+    <ShippingAddress5>Minnesota</ShippingAddress5>
+    <ShippingPostCode>55309</ShippingPostCode>
+    <ShippingCountry>USA</ShippingCountry>
+    <TrackingRequest>Sh2</TrackingRequest>
+   </PatientShipping>
+   <PatientPhysician>
+    <GPPracticeName>19390 181st Ave NW</GPPracticeName>
+	<PracticeCode>ABC123456</PracticeCode>
+	<PhysicianAddress1>19390 181st Ave NW</PhysicianAddress1>
+    <PhysicianAddress2>Big Lake</PhysicianAddress2>
+    <PhysicianCity></PhysicianCity>
+    <PhysicianState>Minnesota</PhysicianState>    
+    <PhysicianCountry>USA</PhysicianCountry>
+	<PhysicianPostCode>55309</PhysicianPostCode>    
+    <PhysicianPhoneNumber>789456123</PhysicianPhoneNumber>
+	<PhysicianEmail>tytest@gmail.com</PhysicianEmail>
+   </PatientPhysician>
+   <Products>
+    <Product>
+     <CedaRXProductID>1548</CedaRXProductID>
+     <CedaRXProductName>Sildenafil</CedaRXProductName>
+     <CedaRxProductStrength>100mg</CedaRxProductStrength>
+     <CedaRXProductType>Generic</CedaRXProductType>
+     <OrderQuantity>1</OrderQuantity>
+	 <RefillQty>5</RefillQty>
+     <QuantityPackSize></QuantityPackSize>
+     <IntakeDirections>TAKE 1 TABLET BY MOUTH ONCE DAILY</IntakeDirections>
+     <ClientOrderValue>26.99</ClientOrderValue>
+     <AnyBrand>n</AnyBrand>
+	 <Questions>
+		<Question>
+			<ParentQuestionID>1</ParentQuestionID>
+			<QuestionID>2</QuestionID>						
+			<Answer>NO</Answer>
+			<OtherDesc></OtherDesc>
+		</Question>
+		<Question>
+			<ParentQuestionID></ParentQuestionID>
+			<QuestionID>3</QuestionID>			
+<Answer>True</Answer>
+			<OtherDesc>Please Provide detail for our GP to reaview</OtherDesc>
+					</Question>
+	 </Questions>
+     <RxDocuments>
+      <RxDocument mime-type="application/pdf"
+                  name="prescription-8360066-176329529211128143114492.pdf">
+      </RxDocument>
+     </RxDocuments>
+    </Product>
+   <Product>
+     <CedaRXProductID>2037</CedaRXProductID>
+     <CedaRXProductName>Sildenafil</CedaRXProductName>
+     <CedaRxProductStrength>25mg</CedaRxProductStrength>
+     <CedaRXProductType>Generic</CedaRXProductType>
+     <OrderQuantity>1</OrderQuantity>
+     <RefillQty>5</RefillQty>
+     <QuantityPackSize></QuantityPackSize>
+     <IntakeDirections>TAKE 1 TABLET BY MOUTH ONCE DAILY</IntakeDirections>
+     <ClientOrderValue>6.99</ClientOrderValue>
+     <AnyBrand>n</AnyBrand>	 
+	 <Questions>
+		<Question>
+			<QuestionID>1</QuestionID>					
+			<Answer>NO</Answer>
+			<OtherDesc></OtherDesc>
+		</Question>
+	 </Questions>
+    </Product>
+   </Products>
+  </Order>
+ </OrderSet>
+</OrderTransmission>
+
+ 
+2.2 Send order Request
+XML Tag
+Tag
+Value
+Sample
+Description
+<OrderTransmission>
+Yes
+Yes
+ 
+ 
+<TransmissionParameters> 
+Yes
+Yes
+ 
+ 
+<Parameter Yes Name="Version">
+ 
+Yes
+1.0.1
+XML version number
+<Parameter Name="OrderXMLType">
+Yes
+Yes
+DEFAULT
+XML version Type
+<Parameter Name="IgnoreCase">
+Yes
+Yes
+YES/NO
+Yes  means XML is  not case sensitive and No means XML is case sensitive
+<Parameter Name="AutoAttachDocument">
+Yes
+Yes
+YES/NO
+Yes  means document  auto attach with products and No means Back office need to attach manually
+<Parameter Name="DocType">
+Yes
+Yes
+Base64/File URL path
+Base64 means document is encrypted  with base64 method File URL Path: Here, client need  to  provide  Document URL path. So CedaRX system  can download invoice or RX documents from URL
+<Parameter Name="UniqueTransmissionID">
+Yes
+Yes
+155
+Client need to provide unique transmission ID for order response
+<Parameter Name="DTStampReceived">
+Yes
+Yes
+30/04/2015 02:06
+ 
+<Parameter Name="NoOfOrdersSent">
+Yes
+Yes
+2
+It  is count  of orders sent from client.
+<OrderSet>
+Yes
+Yes
+ 
+ 
+<Order>
+Yes
+Yes
+ 
+ 
+<ClientOrderID>
+Yes
+Yes (Unique)
+1336902-1111101033
+This is unique to identify orders.
+<ClientOrderDate>
+No
+No
+2014-10-11{YYYY-MM-DD}
+ 
+<ClientOrderAffilliate>
+No
+No
+1015
+ 
+<ClientNotes>
+No
+No
+Teva only
+Order Related Client’s Note
+<Reship>
+No
+No
+Y/N
+Is order is Reship or not?
+<Refill>
+No
+No
+Y/N
+Is order a Refill order
+<Title>
+No
+No
+Mr/Mrs
+Title for name prefix
+<FirstName>
+Yes
+Yes
+William
+Patient First Name
+<MiddleName>
+No
+No
+Ronald
+Patient Middle Name
+<LastName>
+Yes
+Yes
+Lewis
+Patient Last Name
+<BirthDate>
+Yes
+Yes
+1948-08-12{YYYY-MM-DD}
+Patient Birth Date
+<Gender>
+Yes
+Yes
+Male/Female
+Patient Gender
+<Species>
+No
+No
+Human/Vet
+Doctor selection Type
+<ClientPatientID>
+No
+No
+1
+ 
+<Address1>
+No
+No
+926 East Avery Street
+Patient Address 1
+<Address2>
+No
+No
+ 
+Patient Address 2
+<Address3>
+No
+No
+ 
+Patient Address 3
+<Address4>
+No
+No
+Florida City
+Patient Address 4
+<Address5>
+No
+No
+FL
+Patient Address 5
+<PostCode>
+No
+No
+32503
+Patient Postcode
+<Country>
+No
+No
+USA
+Patient Country
+<Height>
+No
+No
+5’8
+Value of height in in/cm
+<Weight>
+No
+No
+160
+Value of weight in kg/pound
+<HeightUnit>
+No
+No
+in/cm
+Height  Supported on "in/cm"
+<WeightUnit>
+No
+No
+kg/pound
+Weight Supported on "kg/pound"
+<Smoker>
+No
+No
+Y/N
+Does Patient Smoker?
+<Pregnant>
+No
+No
+Y/N
+Is Patient Pregnant?
+<BreastFeed>
+No
+No
+Y/N
+Is Patient Breast Feeding?
+<Alcoholic>
+No
+No
+Y/N
+Is Patient Alcoholic?
+<MedicalCondition>
+No
+No
+Diabetes
+Patient medical condition is allow multiple condition by Comma (,) separated.
+<DrugAllergies>
+No
+No
+pen 10.9.14
+Patient drug allergies is allow multiple drug allergies by Comma (,) separated.
+<PetName>
+No
+No
+Max
+Pet Name if patient is not human
+<PetSex>
+No
+No
+Male/Female
+Pet Sex
+<PetDOB>
+No
+No
+12/10/2008
+Pet Date of Birth
+<Delivery Type>
+No
+No
+BranchCollection
+User  need  to specify Delivery type- a)Branch collection/ b) Mail Delivery
+<Branch Name>
+No
+No
+Test Branch Name
+Specify branch name when user exchange order detail
+<Branch Code>
+No
+No
+1
+Code is Mandatory when user specify for Branch Collection
+<Note>
+No
+No
+ 
+Any specific note for branch Collection. E.g "Patient niece Amanda Miller to collect"
+<NHS>
+No
+No
+Y/N
+If Private Prescription return "N"otherwise return "Y"
+<NHSNO>
+No
+No
+123
+If NHS = Y then, NHSNO should be mandatory. Else No need to check NHSNO.
+<Phone>
+No
+No
+Phone no
+ Patient Phone No.
+<Email>
+No
+No
+Email Address
+Patient Email ID.
+<Mobile>
+No
+No
+Mobile No
+Patient Mobile No
+<Document>
+No
+No
+aGV....Zxn (Base64 Encoded file)/ http://www.xyz.com/UAT/(FilePath URL)
+Base64  encoding is use to encrypt PDF documents/FilePath is file  URL to Download PDF Documents.
+<Products>
+Yes
+Yes
+ 
+ 
+<Product>
+Yes
+Yes
+ 
+ 
+<CedaRxProductID>
+Yes
+Yes
+18
+CedaRx Product ID
+<CedaRxProductName>
+Yes
+Yes
+Protonix
+CedaRx Product Name
+<CedaRxProductStrength> 
+ No
+No
+40mg
+CedaRx Product Strength
+<CedaRXProductType>
+No
+No
+Generic
+CedaRx Product Type
+<OrderQuantity>
+Yes
+Yes
+10
+ 
+<QuantityPackSize>
+No
+No
+ 
+ 
+<IntakeDirections>
+No
+No
+Take One Tablet By Mouth Daily
+Direction about medicine
+<ClientOrderValue>
+No
+No
+15.6
+ 
+<AnyBrand>
+No
+No
+Y/N
+ 
+<ParentQuestionID>
+No
+No
+
+
+Parent Question Id
+<QuestionID>
+No
+No
+
+
+Question ID (See table attached)
+<QuestionText>
+No
+No
+
+
+
+
+<Answer>
+No
+No
+
+
+
+
+<Other Desc>
+No
+No
+
+
+Text
+<RxDocuments>
+No
+No
+Y/N
+ 
+<RxDocument>
+No
+No
+aGV....Zxn (Base64 Encoded file)/ http://www.xyz.com/UAT/(FilePath URL)
+Base64  encoding is use to encrypt PDF documents/FilePath is file  URL to Download PDF Documents.
+<PatientShipping>
+Yes
+Yes
+ 
+ 
+<ShippingAddress1>
+Yes
+Yes
+926 East Avery Street
+ 
+<ShippingAddress2>
+No
+No
+ 
+ 
+<ShippingAddress3>
+No
+No
+ 
+ 
+<ShippingAddress4>
+No
+No
+ 
+ 
+<ShippingAddress5>
+No
+No
+FL
+ 
+<ShippingPostCode>
+Yes
+Yes
+32503
+ 
+<ShippingCountry>
+Yes
+Yes
+USA
+ 
+<TrackingRequest>
+No
+No
+Sh1/Sh2/Sh3/Sh4
+Need to send 
+Sh1 = Tracked/
+ Sh2 = UnTracked/ 
+Sh3 = ExpressTracked/ 
+Sh4 = Courier (Same Day)
+<Physician>
+No
+No
+
+
+
+
+<FirstName>
+No
+No
+Dr. William
+Doctor’s First Name
+<LastName>
+No
+No
+Ronald
+Doctor’s Last Name
+<GMCNumber>
+No
+No
+1234567
+GMC Number
+<Type>
+No
+No
+Human
+Human / Pet
+<Address1>
+No
+No
+926 East Avery Street
+Address line 1 of Clinic
+<Address2>
+No
+No
+FL
+Address line 2 of Clinic
+<City>
+No
+No
+London
+City
+<State>
+No
+No
+Bangor
+State
+<Country>
+No
+No
+UK
+Country
+<PhoneNumber>
+No
+No
+1123458789
+PhoneNumber
+<EmailID >
+No
+No
+testemail@yahoo.com 
+EmailID
+
+
+
+
+
+
+
+
+
+
+
+
+
+Send Order Successful Response
+
+<SendOrderResult xmlns:i
+
+="http://www.w3.org/2001/XMLSchema-instance"> <ParameterSet
+
+>
+
+<Parameter>
+
+<Name>UniqueTransmissionID</Name> <Value>00155</Value>
+</Parameter> <Parameter>
+
+<Name>DTStampReceived</Name> <Value>2015- 04-30 02:06:55</Value>
+
+</Parameter> <Parameter>
+
+<Name>NoOfOrdersSent</Name> <Value>1</Value>
+
+</Parameter>
+
+</ParameterSet> <OrderSet>
+
+<Order> <ClientOrderID>35151336test8</ClientOrderID> <CedarXOrderID>56889</CedarXOrderID>
+
+<DTStampOrderProcessing>2015-05-11
+
+10:18:09</DTStampOrderProcessing> <ResponseCode>1</ResponseCode> <ResponseMessage>SUCCESS</ResponseMessage>
+
+<SendOrderErrors i:nil="true"/> </Order>
+
+</OrderSet> <ResponseCode>1</ResponseCode>
+
+<ResponseMessage>OK</ResponseMessage>
+
+<Errors i:nil="true"/>
+
+</SendOrderResult>
+
+
+2.3 Send Order Success Response
+XML Tag
+Value
+Possible Values
+Description
+<SendOrderResult>
+ 
+ 
+ 
+<ParameterSet>
+ 
+ 
+ 
+<Parameter>
+ 
+ 
+ 
+<Name>
+UniqueTransmissionID
+UniqueTransmissionID/ DTStampReceived/ NoOfOrdersSent
+ 
+<Value>
+155
+00155/2015-04-30 02:06:55/1
+ 
+<OrderSet>
+ 
+ 
+ 
+<Order>
+ 
+ 
+ 
+<ClientOrderID>
+3515-1336test8
+ 
+Client Order Id
+<CedarXOrderID>
+56889
+ 
+it returns Cedarx order id if it is successfully uploaded
+<DTStampOrderProcessing>
+11/05/2015 10:18
+ 
+ 
+<ResponseCode>
+1
+0/1
+ 
+<ResponseMessage>
+SUCCESS
+OK/SUCCESS/ERRORS DURING ORDER PROCESSING
+ 
+<SendOrderErrors
+ 
+Error list from Cedarx Web service
+ 
+i:nil="true"/>
+ 
+ 
+ 
+<Errors i:nil="true"/>
+ 
+ 
+ 
+
+
+
+Send Order Failed Response
+<SendOrderResult xmlns:i
+
+="http://www.w3.org/2001/XMLSchema-instance">
+
+<ParameterSet>
+
+<Parameter> <Name>UniqueTransmissionID</Name> <Value>00155</Value>
+
+</Parameter> <Parameter>
+
+<Name>DTStampReceived</Name>
+
+<Value>2015- 04-30 02:06:55</Value>
+
+</Parameter> <Parameter>
+<Name>NoOfOrdersSent</Name>
+
+<Value>1</Value> </Parameter>
+
+</ParameterSet> <OrderSet>
+
+<Order> <ClientOrderID>3515-1336test8</ClientOrderID> <CedarXOrderID>0</CedarXOrderID>
+
+<DTStampOrderProcessing>2015-05-11
+
+10:08:57</DTStampOrderProcessing> <ResponseCode>0</ResponseCode>
+
+<ResponseMessage>ERRORS DURING ORDER
+
+PROCESSING</ResponseMessage>
+
+<SendOrderErrors> <SendOrderError>
+
+<ErrorCode>142</ErrorCode>
+
+<ErrorMessage>Order Download Error Client Order Id - 3515-1336test8 at Product count number 1 : Product ID "87" is not associated with Client 13 in the Product Client Table CedaRx
+
+System</ErrorMessage>
+
+</SendOrderError>
+
+<SendOrderError>
+
+<ErrorCode>161</ErrorCode>
+
+<ErrorMessage>Order Download Error Client Order Id - 3515-1336test8 : Master Shipping table empty with shipping type Y for client Mymed</ErrorMessage>
+</SendOrderError>
+</SendOrderErrors> </Order>
+
+</OrderSet> <ResponseCode>1</ResponseCode>
+
+<ResponseMessage>OK</ResponseMessage>
+
+<Errors i:nil="true"/> </SendOrderResult>
+
+2.4 Send Order Failed Response
+XML Tag
+Value
+Possible Values
+Description
+<SendOrderResult>
+ 
+ 
+ 
+<ParameterSet>
+ 
+ 
+ 
+<Parameter>
+ 
+ 
+ 
+<Name>
+UniqueTransmissionID
+UniqueTransmissionID/ DTStampReceived/ NoOfOrdersSent
+ 
+<Value>
+155
+00155/2015-04-30 02:06:55/1
+ 
+<OrderSet>
+ 
+ 
+ 
+<Order>
+ 
+ 
+ 
+<ClientOrderID>
+3515-1336test8
+Client Order Id
+ 
+<CedarXOrderID>
+0
+it return Cedarx order id if it is successfully uploaded
+ 
+<DTStampOrderProcessing>
+11/05/2015 10:08
+ 
+ 
+<ResponseCode>
+0
+ 
+ 
+<ResponseMessage>
+ERRORS DURING ORDER PROCESSING
+OK/SUCCESS/ERRORS DURING  ORDER PROCESSING
+ 
+<SendOrderErrors>
+ 
+ 
+Error list from Cedarx Web service
+<SendOrderError>
+ 
+ 
+ 
+<ErrorCode>
+142
+001/002...
+Error Code to identify Error
+<ErrorMessage>
+Order Download Error Client  Order  Id  -  3515-1336test8  at Product count number 1 : Product ID "87" is not associated with Client 13 in the Product Client Table 
+ 
+ 
+
+
+
+Get Order Status Response
+<OrderStatus xmlns:i
+
+="http://www.w3.org/2001/XMLSchema-instance">
+
+<CedarxOrderID>159</CedarxOrderID> <ClientOrderID>1336902-1111101033</ClientOrderID> <PatientName>William Lewis</PatientName>
+
+<PatientDOB>1948/08/02</PatientDOB>
+
+<Gender>Male</Gender> <Reship>No</Reship> <Repeat>No</Repeat> <TrackingType></TrackingType>
+
+<Status>SH</Status> <Invoice>
+
+<InvoiceID>3</InvoiceID> <InvoiceValue>46071.60</InvoiceValue>
+
+<InvoiceDate>2015/02/15</InvoiceDate> </Invoice>
+
+<Shipping>
+
+<ShippingAddress1>926 East Avery
+
+Street</ShippingAddress1> <ShippingAddress2></ShippingAddress2> <ShippingAddress3></ShippingAddress3> <ShippingAddress4></ShippingAddress4> <ShippingAddress5>FL</ShippingAddress5>
+<ShippingPostCode>32503</ShippingPostCode> <ShippingCountry>USA</ShippingCountry> <ShippingType>Tracked</ShippingType> <DeliveryTrackingNumber>654784512<DeliveryTrackingNumber>
+
+<ShippedDate></ShippedDate>
+
+</Shipping > < Products>
+
+<Product> <ProductID>27</ProductID>
+
+<ProductNameUK>ADIZEM SR</ProductNameUK>
+<ProductNameUS>ADIZEM
+
+SR</ProductNameUS> <ProductName>ADIZ28C180</ProductName> <RequestedQty>5</RequestedQty> <AllocatedQty>5</AllocatedQty>
+
+<ProductNotes /> </Product> <Product>
+
+<ProductID>29</ProductID> <ProductNameUK>ABILIFY</ ProductNameUK >
+
+<ProductNameUS>ABILIFY DISCMELT</ ProductNameUS >
+
+<ProductName>ABIL28D10</ProductName> <RequestedQty>5</RequestedQty> <AllocatedQty>5</AllocatedQty>
+
+<ProductNotes />
+
+</Product> </Products>
+
+<OrderNotes /> <LastUpdatedUser>System</LastUpdatedUser> <LastUpdatedDate>2015/03/04</LastUpdatedDate>
+
+<SendOrderErrors />
+
+</OrderStatus>
+
+
+2.5 Get Order Status
+XML Tag
+Value
+Possible Values
+Description
+OrderStatus
+ 
+ 
+ 
+CedarxOrderID
+159
+ 
+Cedarx order id unique
+ClientOrderID
+1336902-1111101033
+ 
+Client order id unique
+PatientName
+William Lewis
+ 
+Patient name
+PatientDOB
+02/08/1948
+1948/08/02{YYYY/MM/DD} 
+Patient Birth Date
+Gender
+Male
+Male/Female
+Patient Gender
+Reship
+Yes
+Yes/No
+Is order reship?
+Repeat
+No
+Yes/No
+Is order refill?
+TrackingType
+ 
+ Sh1/Sh2/Sh3/Sh4
+ 
+Status
+OD
+OD/OQ/PP/RPhP/SH/IV
+Status of order: OD means Order Download, OQ means Order Query, RPhP means Order received in Pharmacy, PP means Pharmacy Processing, SH means Shipped,IV means invoiced
+Invoice
+ 
+ 
+ 
+InvoiceID
+3
+Invoice unique id
+ 
+InvoiceValue
+46071.6
+Invoice value
+ 
+InvoiceDate
+15/02/2015
+2015/02/15{YYYY/MM/DD} 
+Invoice Creation Date
+Shipping
+0
+ 
+ 
+ShippingAddress1
+926 East Avery Street
+ 
+ 
+ShippingAddress2
+ 
+ 
+ 
+ShippingAddress3
+ 
+ 
+ 
+ShippingAddress4
+Florida City
+ 
+ 
+ShippingAddress5
+FL
+ 
+ 
+ShippingPostCode
+32503
+ 
+ 
+ShippingCountry
+UK
+UK/ FR etc.
+ 
+ShippingType
+Tracked
+Tracked/Untracked
+ 
+DeliveryTrackingNumber
+654784512
+ 
+ 
+ShippedDate
+15/03/2015
+2015/03/15{YYYY/MM/DD} 
+Shipping Date
+Products
+ 
+ 
+ 
+Product
+ 
+ 
+ 
+ProductID
+27
+ 
+Product Unique ID
+ProductNameUK
+ADIZEM SR
+ 
+Product UK Name
+ProductNameUS
+ADIZEM SR
+ 
+Product US Name
+ProductName
+ADIZ28C180
+ 
+Master Product Name
+RequestedQty
+5
+ 
+Quantity Requested by Client
+AllocatedQty
+5
+ 
+Allocated Quantity by Cedarx System to client
+ProductNotes
+ 
+ 
+Product Related Notes
+OrderNotes
+ 
+ 
+Order Related Notes
+LastUpdatedUser
+System
+System/User
+User Name of update order
+LastUpdatedDate
+12/03/2015
+2015/03/12{YYYY/MM/DD} 
+Last Changed Date from User
+SendOrderErrors
+ 
+Error List
+ 
+
+
+
+CancelOrder
+
+CancelOrder method will help client to cancel their order. Client can call this method passing clientOrderID, CedaRxOrderID and productid. Here productid is not as mandatory parameter, If they are not passing productid than whole order will cancel else based on productid line will be cancel. Client will get success response if they got successfully cancel order or product.
+[OperationContract]
+
+[WebInvoke(Method = "POST", RequestFormat = WebMessageFormat.Xml,
+ResponseFormat = WebMessageFormat.Xml,
+UriTemplate =
+
+” /CancelOrder/{clientOrderID}/{cedarxOrderID}/{productID}”)]
+
+wsCancelOrder CancelOrder (String clientOrderID, String cedarxOrderID, String productID);
+
+
+2.6 
+Request URL
+Description
+Output
+https://www.cedarx.co.uk/CedaRxWCF/ServiceCedaRx.svc/CancelOrder/SpvvNC1p/ 2475604/0
+
+
+
+Client wants to cancel order by Order level than Client will pass clientOrderID, CedaRxOrderID and productid as 0.
+Client will get success response if they got successfully cancel order or product. And if there is some error than user will get error message.
+https://www.cedarx.co.uk/CedaRxWCF/ServiceCedaRx.svc/CancelOrder/SpvvNC1p/ 2475604/5051
+
+
+Client wants to cancel order by Product level than Client will pass clientOrderID, CedaRxOrderID and productid.
+Client will get success response if they got successfully cancel order or product. And if there is some error than user will get error message.
+
+
+
+CancelOrder success Response
+<CancelOrder xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
+    <OrderSet>
+        <CancelOrderArray>
+            <ClientOrderID>TTxgc5WPtM</ClientOrderID>
+            <DTStampOrderProcessing>2019-03-07 08:21:17</DTStampOrderProcessing>
+            <ResponseCode>1</ResponseCode>
+            <ResponseMessage>SUCCESS</ResponseMessage>
+            <StatusUpdateError i:nil="true"/>
+        </CancelOrderArray>
+    </OrderSet>
+    <ResponseCode>1</ResponseCode>
+    <ResponseMessage>OK</ResponseMessage>
+    <Errors i:nil="true"/>
+</CancelOrder>
+
+
+Error List
+
+2.7 Error List
+Error Code
+Error Message
+1
+Client authentication key is missing in header line.
+2
+Client authentication key is wrong. Please contact system administrator.
+3
+Invalid XML format.
+4
+Unrecognized system error. Please contact system administrator.
+5
+System processing data. Please try again.
+6
+Invalid parameter values $/$, string/int
+7
+Invalid parameter values $/$, int/0 or 1
+8
+Order not found:  No product exists against provided ClientOrderID.
+9
+XML tag/value missing: XXX is missing.
+10
+Product Not Found:  Product is not associated with requested client.
+11
+Invalid Parameter Values: Both Parameter values should not be zero.
+12
+Document: Data is missing on XXX document
+13
+Document: Name is missing on XXX document but it’s uploaded.
+101
+System Currency Not Found
+102
+Currency Country Not Found
+103
+Client Currency Not Found
+104
+Currency Conversion Not Found
+105
+Not Found Client Currency or Conversion Factor
+106
+Client Order Id Should not be null
+107
+Client Order Id Already exists for particular client
+108
+Patient id must not be null
+109
+Client Order date Should not be null
+110
+Format of Client Order Date is invalid
+111
+Client Order Date must not be future Date
+112
+Reship value is invalid
+113
+First Name of Patient should not be null
+114
+Last Name of Patient should not be null
+115
+Patient Birth Date should not be null
+116
+Format of Patient Birth Date is invalid
+117
+Patient Birth Date must not be Future Date
+118
+Patient Gender should not be NULL
+119
+Patient Gender is not valid
+120
+Patient is Male and Pregnant value yes is not allowed
+121
+Patient is Male and Breast value is yes not allowed
+122
+Species should not be null
+123
+Address1 of patient should not be null
+124
+Address4 of patient should not be null
+125
+Address5 of patient should not be null
+126
+Patient post code should not be null
+127
+Patient post code length should be 4 or 5 or 10
+128
+Patient Country should not be null
+129
+Patient Country is not valid
+130
+Patient Country doesn’t exists in Master Type Table in Cedarx System
+132
+Patient Pregnant value is invalid
+133
+Patient Breast Feed value is invalid
+134
+Patient Alcoholic value is invalid
+135
+Client Product should not be null
+136
+Product not found in the system
+137
+Product Cost doesn’t exists for a product
+138
+Average Cost Price value is less than or equal to zero
+139
+Product Sale price Data doesn’t exists in the cedarx system for a product-
+140
+Product Sale Price value is less than or equal to zero
+141
+Product Stock Level Data doesn’t exists in the cedarx system for a product-
+142
+Product Doesn’t exists for a particular client
+143
+Product client Sale price association is not there with
+144
+Product Client Sale price value is less than or equal to
+145
+Product Repeated for an import for a particular client
+146
+Product id should not be decimal value
+147
+Product name should not be null
+148
+Product strength should not be null
+149
+Product quantity should not be null
+150
+Product quantity should not be decimal value
+151
+Product quantity should not be less than or equal to zero
+152
+Client order value
+153
+Client order value is not be less than or equal to zero
+154
+Any Brand value is invalid
+155
+Shipping Address1 of patient should not be null
+156
+Shipping Address4 of patient should not be null
+157
+Shipping Address5 of patient should not be null
+158
+Shipping Post code should not be null
+159
+Shipping Post code length should be 4 or 5 or 10
+160
+Tracking Request value should is invalid
+161
+Master Shipping Table empty with tracking request type
+162
+Shipping Country should not be null
+163
+Invalid Delivery type
+164
+Invalid Branch code
+165
+Order line rejected, Client Question Id is Invalid.
+166
+Order line rejected, No pending Refill Quantity.
+167
+Order Line rejected, In-Active product.
+168
+Order Line rejected, 4 pending Refill Quantity Exists.
+
+
+Support Programs
+After designing client interface for CedaRx WCF service, Client interface developer team further need to work with CedaRx WCF service development team to test and check handshake on client side as well as CedaRx side also client and CedaRx team need to reconcile integration check for XML data and PDF data. Hence Client team need to contact CedaRx team for further processing on following information:
+CedaRx help desk:  help@daylewisplc.co.uk

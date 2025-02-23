@@ -1,0 +1,181 @@
+@import '@fontsource/darker-grotesque/300.css';
+@import '@fontsource/darker-grotesque/500.css';
+@import '@fontsource/darker-grotesque/700.css';
+@import '@fontsource/darker-grotesque/900.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* Sophisticated, minimalist color palette */
+  --background: #0a0a0a;
+  --foreground: #ffffff;
+  --muted: rgba(255, 255, 255, 0.7);
+  --border: rgba(255, 255, 255, 0.1);
+  --hover: rgba(255, 255, 255, 0.15);
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    --background: #ffffff;
+    --foreground: #0a0a0a;
+    --muted: rgba(0, 0, 0, 0.7);
+    --border: rgba(0, 0, 0, 0.1);
+    --hover: rgba(0, 0, 0, 0.05);
+  }
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+  font-family: 'Darker Grotesque', sans-serif;
+}
+
+@layer components {
+  .container-padding {
+    @apply px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto;
+  }
+  
+  .heading-1 {
+    @apply text-7xl sm:text-8xl lg:text-9xl font-black tracking-tighter;
+    line-height: 0.9;
+  }
+  
+  .heading-2 {
+    @apply text-5xl sm:text-6xl lg:text-7xl font-bold tracking-tighter;
+    line-height: 0.95;
+  }
+
+  .heading-3 {
+    @apply text-3xl sm:text-4xl font-bold;
+    line-height: 1.1;
+  }
+
+  .smooth-scroll {
+    @apply scroll-smooth transition-all duration-300;
+  }
+
+  .interactive-border {
+    @apply border border-border/50 hover:border-border transition-smooth;
+  }
+  
+  .interactive-bg {
+    @apply hover:bg-hover/10 transition-smooth;
+  }
+  
+  .interactive-scale {
+    @apply hover:scale-[1.02] transition-smooth;
+  }
+}
+
+/* Custom cursor */
+.custom-cursor {
+  @apply fixed w-8 h-8 pointer-events-none z-50 mix-blend-difference;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  transition: transform 0.2s ease;
+}
+
+@keyframes ping-slow {
+  75%, 100% {
+    transform: scale(2);
+    opacity: 0;
+  }
+}
+
+.animate-ping-slow {
+  animation: ping-slow 3s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+/* Enhanced Typography */
+@layer base {
+  h1, h2, h3, h4, h5, h6 {
+    @apply tracking-tight;
+  }
+}
+
+/* Enhanced Spacing System */
+@layer utilities {
+  .section-spacing {
+    @apply py-24 lg:py-32;
+  }
+  
+  .content-spacing {
+    @apply space-y-24 lg:space-y-32;
+  }
+}
+
+/* Improved Transitions */
+@layer utilities {
+  .transition-smooth {
+    @apply transition-all duration-300 ease-out;
+  }
+  
+  .transition-slower {
+    @apply transition-all duration-500 ease-out;
+  }
+}
+
+/* Section Transitions */
+.section-fade-up {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+.section-fade-up.in-view {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Enhanced Gradients */
+.gradient-text {
+  @apply bg-clip-text text-transparent bg-gradient-to-r from-white to-white/50;
+}
+
+.gradient-border {
+  position: relative;
+}
+
+.gradient-border::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(to right, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+}
+
+.glitch {
+  position: relative;
+  animation: glitch 1s linear infinite;
+}
+
+.glitch::before,
+.glitch::after {
+  content: attr(data-text);
+  position: absolute;
+  left: 0;
+}
+
+.glitch::before {
+  animation: glitch-top 1s linear infinite;
+  clip-path: polygon(0 0, 100% 0, 100% 33%, 0 33%);
+  -webkit-clip-path: polygon(0 0, 100% 0, 100% 33%, 0 33%);
+}
+
+.glitch::after {
+  animation: glitch-bottom 1.5s linear infinite;
+  clip-path: polygon(0 67%, 100% 67%, 100% 100%, 0 100%);
+  -webkit-clip-path: polygon(0 67%, 100% 67%, 100% 100%, 0 100%);
+}
+
+@keyframes glitch {
+  2%, 64% { transform: translate(2px,0) skew(0deg); }
+  4%, 60% { transform: translate(-2px,0) skew(0deg); }
+  62% { transform: translate(0,0) skew(5deg); }
+}
