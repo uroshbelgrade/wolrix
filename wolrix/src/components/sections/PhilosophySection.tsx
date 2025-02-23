@@ -56,7 +56,7 @@ export function PhilosophySection() {
   };
 
   return (
-    <section className="py-32 relative overflow-hidden">
+    <section id="philosophy" className="py-32 relative overflow-hidden">
       {/* Background Elements */}
       <motion.div
         className="absolute inset-0 opacity-30"

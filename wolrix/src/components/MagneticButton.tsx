@@ -7,9 +7,15 @@ interface MagneticButtonProps {
   children: React.ReactNode;
   onClick?: () => void;
   className?: string;
+  variant?: 'primary' | 'outline';
 }
 
-export function MagneticButton({ children, onClick, className = "" }: MagneticButtonProps) {
+export function MagneticButton({ 
+  children, 
+  onClick, 
+  className = "", 
+  variant = 'primary' 
+}: MagneticButtonProps) {
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const ref = useRef<HTMLButtonElement>(null);
 
@@ -21,6 +27,12 @@ export function MagneticButton({ children, onClick, className = "" }: MagneticBu
     setPosition({ x: middleX*0.3, y: middleY*0.3 });
   };
 
+  const baseStyles = "px-8 py-4 rounded-full transition-colors";
+  const variantStyles = {
+    primary: "bg-foreground text-background hover:bg-muted",
+    outline: "border border-border text-foreground hover:bg-hover/10"
+  };
+
   return (
     <motion.button
       ref={ref}
@@ -28,7 +40,7 @@ export function MagneticButton({ children, onClick, className = "" }: MagneticBu
       onMouseLeave={() => setPosition({ x: 0, y: 0 })}
       animate={{ x: position.x, y: position.y }}
       transition={{ type: "spring", stiffness: 150, damping: 15 }}
-      className={`relative px-8 py-4 bg-foreground text-background hover:bg-muted transition-colors rounded-full ${className}`}
+      className={`${baseStyles} ${variantStyles[variant]} ${className}`}
       onClick={onClick}
     >
       {children}

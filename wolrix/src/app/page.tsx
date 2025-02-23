@@ -165,10 +165,16 @@ export default function Home() {
                   transition={{ delay: 0.6 }}
                   className="flex gap-6"
                 >
-                  <MagneticButton className="border border-border hover:bg-hover bg-transparent">
+                  <MagneticButton 
+                    variant="outline" 
+                    onClick={() => document.getElementById('philosophy')?.scrollIntoView({ behavior: 'smooth' })}
+                  >
                     Our Philosophy
                   </MagneticButton>
-                  <MagneticButton>
+                  <MagneticButton 
+                    variant="primary"
+                    onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
+                  >
                     Join the Elite
                   </MagneticButton>
                 </motion.div>
