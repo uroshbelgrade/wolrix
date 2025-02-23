@@ -1,15 +1,22 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
-import { CanvasElement } from './types';
 
 export function GridBackground() {
-  const canvasRef = useRef<CanvasElement>(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
   const mousePos = useRef({ x: 0, y: 0 });
 
   useEffect(() => {
     const canvas = canvasRef.current!;
     const ctx = canvas.getContext('2d')!;
+    
+    const handleResize = () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    };
+    
+    handleResize();
+    window.addEventListener('resize', handleResize);
     
     const drawGrid = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -31,6 +38,10 @@ export function GridBackground() {
     };
     
     drawGrid();
+    
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
   }, []);
 
   return (

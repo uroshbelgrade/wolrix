@@ -1,13 +1,12 @@
 'use client';
 
 import { useRef, useMemo } from 'react';
-import { useFrame } from '@react-three/fiber';
+import { useFrame, RootState } from '@react-three/fiber';
 import { Points, PointMaterial } from '@react-three/drei';
 import * as THREE from 'three';
-import { ThreePoints } from './types';
 
 export function HeroParticles() {
-  const ref = useRef<ThreePoints>(null);
+  const ref = useRef<THREE.Points>(null);
   const mouseRef = useRef({ x: 0, y: 0 });
   const mouseLight = useRef<THREE.PointLight>(null);
   
@@ -57,7 +56,7 @@ export function HeroParticles() {
     return [positions1, positions2, positions3];
   }, []);
 
-  useFrame((state) => {
+  useFrame((state: RootState) => {
     const { clock, mouse, camera } = state;
     if (ref.current) {
       // Enhanced mouse interaction

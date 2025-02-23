@@ -148,7 +148,7 @@ export default function Home() {
                 </motion.h1>
 
                 <motion.p 
-                  className="text-xl text-muted"
+                  className="text-2xl text-muted max-w-2xl mb-12"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: 0.4 }}

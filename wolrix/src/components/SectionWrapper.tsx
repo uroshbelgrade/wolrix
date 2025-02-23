@@ -11,7 +11,7 @@ interface SectionWrapperProps {
 }
 
 export function SectionWrapper({ children, className = "", delay = 0 }: SectionWrapperProps) {
-  const ref = useRef(null);
+  const ref = useRef<HTMLElement>(null);
   const isInView = useInView(ref, { once: true, margin: "-10%" });
 
   return (

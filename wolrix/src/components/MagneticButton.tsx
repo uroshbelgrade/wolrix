@@ -3,7 +3,13 @@
 import { motion } from 'framer-motion';
 import { useState, useRef } from 'react';
 
-export function MagneticButton({ children }: { children: React.ReactNode }) {
+interface MagneticButtonProps {
+  children: React.ReactNode;
+  onClick?: () => void;
+  className?: string;
+}
+
+export function MagneticButton({ children, onClick, className = "" }: MagneticButtonProps) {
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const ref = useRef<HTMLButtonElement>(null);
 
@@ -22,7 +28,8 @@ export function MagneticButton({ children }: { children: React.ReactNode }) {
       onMouseLeave={() => setPosition({ x: 0, y: 0 })}
       animate={{ x: position.x, y: position.y }}
       transition={{ type: "spring", stiffness: 150, damping: 15 }}
-      className="relative px-8 py-4 bg-foreground text-background hover:bg-muted transition-colors rounded-full"
+      className={`relative px-8 py-4 bg-foreground text-background hover:bg-muted transition-colors rounded-full ${className}`}
+      onClick={onClick}
     >
       {children}
     </motion.button>
