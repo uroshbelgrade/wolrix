@@ -4,7 +4,6 @@ import Navbar from '@/components/Navbar';
 import { motion } from 'framer-motion';
 import { ParallaxProvider } from 'react-scroll-parallax';
 import { Canvas } from '@react-three/fiber';
-import { Particles } from '@/components/Particles';
 import { WhySection } from '@/components/sections/WhySection';
 import { HowSection } from '@/components/sections/HowSection';
 import { WhatSection } from '@/components/sections/WhatSection';
@@ -149,14 +148,14 @@ export default function Home() {
                 </motion.h1>
 
                 <motion.p 
-                  className="text-2xl text-muted max-w-2xl mb-12"
+                  className="text-xl text-muted"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: 0.4 }}
                 >
-                                    In a world that demands excellence, we forge our own future. 
+                  In a world that demands excellence, we forge our own future. 
                   Through strategic vision, unwavering discipline, and relentless innovation, 
-                  we're building a stronger digital future—because greatness cannot wait.
+                  we&apos;re building a stronger digital future—because greatness cannot wait.
                 </motion.p>
 
                 <motion.div
@@ -196,7 +195,7 @@ export default function Home() {
         {/* Add smooth scroll indicator between sections */}
         <div className="fixed right-8 top-1/2 -translate-y-1/2 z-50 hidden lg:block">
           <div className="space-y-4">
-            {['hero', 'philosophy', 'why', 'how'].map((section, index) => (
+            {['hero', 'philosophy', 'why', 'how'].map((section) => (
               <motion.div
                 key={section}
                 className="w-2 h-2 rounded-full bg-foreground/20 cursor-pointer hover:bg-foreground/40 transition-smooth"

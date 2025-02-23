@@ -1,10 +1,5 @@
 'use client';
 
-import { Motion } from '../Motion';
-import { useInView } from 'framer-motion';
-import { useRef } from 'react';
-import { motion } from 'framer-motion';
-
 export function WhatSection() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });

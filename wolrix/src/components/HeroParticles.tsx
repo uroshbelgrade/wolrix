@@ -4,9 +4,10 @@ import { useRef, useMemo } from 'react';
 import { useFrame } from '@react-three/fiber';
 import { Points, PointMaterial } from '@react-three/drei';
 import * as THREE from 'three';
+import { ThreePoints } from './types';
 
 export function HeroParticles() {
-  const ref = useRef<any>();
+  const ref = useRef<ThreePoints>(null);
   const mouseRef = useRef({ x: 0, y: 0 });
   const mouseLight = useRef<THREE.PointLight>(null);
   

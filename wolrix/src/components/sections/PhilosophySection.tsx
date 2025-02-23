@@ -90,9 +90,8 @@ export function PhilosophySection() {
             </h2>
           </motion.div>
           <p className="text-xl text-muted">
-            Five core principles that drive our three divisions to excellence. 
-            Through education, development, and strategic investments, we're not just 
-            participating in markets—we're defining them.
+            These aren&apos;t just principles—they&apos;re the foundation of mastery. 
+            Our philosophy shapes leaders who don&apos;t just succeed, but dominate.
           </p>
         </motion.div>
 

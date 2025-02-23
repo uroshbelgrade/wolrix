@@ -1,10 +1,10 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
-import { motion } from 'framer-motion';
+import { CanvasElement } from './types';
 
 export function GridBackground() {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const canvasRef = useRef<CanvasElement>(null);
   const mousePos = useRef({ x: 0, y: 0 });
 
   useEffect(() => {
