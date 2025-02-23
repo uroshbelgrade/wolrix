@@ -15,9 +15,8 @@ export class ErrorBoundary extends Component<Props, State> {
     hasError: false
   };
 
-  public static getDerivedStateFromError(/* eslint-disable-next-line @typescript-eslint/no-unused-vars */
-    error: Error
-  ): State {
+  // Using underscore prefix is a TypeScript convention for unused parameters
+  public static getDerivedStateFromError(_: Error): State {
     return { hasError: true };
   }
 
