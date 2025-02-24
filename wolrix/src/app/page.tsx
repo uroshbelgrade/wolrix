@@ -156,7 +156,7 @@ export default function Home() {
                 >
                   In a world that demands excellence, we forge our own future. 
                   Through strategic vision, unwavering discipline, and relentless innovation, 
-                  we&apos;re building a stronger digital future—because greatness cannot wait.
+                  we`re building a stronger digital future—because greatness cannot wait.
                 </motion.p>
 
                 <motion.div

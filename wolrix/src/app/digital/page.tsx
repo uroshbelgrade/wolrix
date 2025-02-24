@@ -68,7 +68,7 @@ export default function DigitalPage() {
                   animate={{ opacity: 1 }}
                   transition={{ delay: 0.4 }}
                 >
-                  We don&apos;t just deliver services—we shape digital landscapes. 
+                  We don`t just deliver services—we shape digital landscapes. 
                   Through innovation, precision, and unmatched expertise, we transform 
                   businesses into market leaders.
                 </motion.p>

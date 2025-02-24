@@ -11,7 +11,7 @@ export function PhilosophySection() {
   const principles = [
     {
       title: "First Position Advantage",
-      description: "In digital transformation, being first isn&apos;t just an advantage—it&apos;s everything. We lead markets through innovation, not follow through imitation.",
+      description: "In digital transformation, being first isn`t just an advantage—it`s everything. We lead markets through innovation, not follow through imitation.",
       icon: "🎯",
       color: "from-purple-500/20 to-transparent"
     },
@@ -91,8 +91,8 @@ export function PhilosophySection() {
           </motion.div>
           <p className="text-xl text-muted">
             Five core principles that drive our three divisions to excellence. 
-            Through education, development, and strategic investments, we&apos;re not just 
-            participating in markets—we&apos;re defining them.
+            Through education, development, and strategic investments, we`re not just 
+            participating in markets—we`re defining them.
           </p>
         </motion.div>
 
