@@ -36,7 +36,7 @@ export function DynamicCursor() {
         el.removeEventListener('mouseleave', handleUnhover);
       });
     };
-  }, []);
+  }, [cursorX, cursorY]);
 
   return (
     <motion.div

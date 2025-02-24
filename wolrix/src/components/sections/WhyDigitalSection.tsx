@@ -118,8 +118,8 @@ export function WhyDigitalSection() {
         className="max-w-3xl mx-auto text-center mt-24"
       >
         <p className="text-xl text-muted italic">
-          "In the digital age, excellence isn't optional—it's imperative. 
-          We don't just meet standards; we set them."
+          &ldquo;In the digital age, excellence isn&apos;t optional—it&apos;s imperative. 
+          We don&apos;t just meet standards; we set them.&rdquo;
         </p>
         <div className="mt-4 text-sm font-medium">CEO, Wolrix Digital</div>
       </motion.div>
