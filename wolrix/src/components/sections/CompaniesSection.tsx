@@ -82,11 +82,11 @@ export function CompaniesSection() {
 
                   <Link
                     href={company.link}
-                    className="inline-flex items-center text-accent hover:text-accent-hover transition-colors gap-2"
+                    className="inline-flex items-center text-accent hover:text-accent-hover transition-colors gap-2 group"
                   >
                     Learn more
                     <svg 
-                      className="w-4 h-4" 
+                      className="w-4 h-4 transform transition-transform group-hover:translate-x-1" 
                       fill="none" 
                       stroke="currentColor" 
                       viewBox="0 0 24 24"
