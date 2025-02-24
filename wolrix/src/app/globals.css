@@ -16,16 +16,6 @@
   --hover: rgba(255, 255, 255, 0.15);
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    --background: #ffffff;
-    --foreground: #0a0a0a;
-    --muted: rgba(0, 0, 0, 0.7);
-    --border: rgba(0, 0, 0, 0.1);
-    --hover: rgba(0, 0, 0, 0.05);
-  }
-}
-
 body {
   color: var(--foreground);
   background: var(--background);

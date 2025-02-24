@@ -19,8 +19,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="scroll-smooth">
-      <body className={`${geist.variable} antialiased`}>
+    <html lang="en" className="scroll-smooth dark">
+      <body className={`${geist.variable} antialiased bg-background text-foreground`}>
         {children}
         <DynamicCursor />
       </body>
