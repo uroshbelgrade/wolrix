@@ -197,14 +197,14 @@ export function WhyDigitalSection() {
                 <p className="text-2xl text-muted">
                   <span className="text-foreground font-bold">No backlinks. No case studies. No public acclaim.</span>{' '}
                   Just pure, transformative results that keep your competitors wondering how 
-                  you've evolved so rapidly.
+                  you&apos;ve evolved so rapidly.
                 </p>
 
                 <p className="text-2xl text-muted">
                   <span className="text-foreground font-bold">This is beyond standard NDAs.</span>{' '}
                   This is a commitment to be the silent force behind your market dominance. 
                   We operate in absolute secrecy, ensuring your competitive advantages remain 
-                  undetectable until they're unbeatable.
+                  undetectable until they&apos;re unbeatable.
                 </p>
               </motion.div>
             </div>
@@ -216,7 +216,7 @@ export function WhyDigitalSection() {
               transition={{ duration: 0.8, delay: 0.8 }}
             >
               <p className="text-3xl font-light text-muted">
-                "Let them wonder how you did it."
+                &ldquo;Let them wonder how you did it.&rdquo;
               </p>
             </motion.div>
           </div>
