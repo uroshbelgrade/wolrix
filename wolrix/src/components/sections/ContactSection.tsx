@@ -2,31 +2,11 @@
 
 import { Motion } from '../Motion';
 import { useInView } from 'framer-motion';
-import { useRef, useState } from 'react';
+import { useRef } from 'react';
 
 export function ContactSection() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
-  const [formState, setFormState] = useState({
-    name: '',
-    email: '',
-    company: '',
-    message: ''
-  });
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    console.log('Form submitted:', formState);
-  };
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setFormState(prev => ({
-      ...prev,
-      [e.target.name]: e.target.value
-    }));
-  };
-
-  const inputStyles = "w-full px-4 py-3 bg-[#111] border border-border rounded-lg focus:outline-none focus:border-foreground/40 transition-colors text-foreground placeholder-foreground/30";
 
   return (
     <section id="contact" className="py-24 relative overflow-hidden">
@@ -39,94 +19,32 @@ export function ContactSection() {
         >
           <div className="max-w-3xl mx-auto text-center mb-16">
             <h2 className="heading-2 mb-6">
-              Elevate Your <span className="gradient-text">Vision</span>
+              Initiate a <span className="gradient-text">Strategic Discussion</span>
             </h2>
-            <p className="text-xl text-muted">
-              Connect with us to explore how we can transform your digital presence
-              and drive exceptional results.
+            <p className="text-xl text-muted mb-12">
+              For those ready to shape the digital future, we offer two paths 
+              to begin our collaboration.
             </p>
-          </div>
-        </Motion>
 
-        <div className="max-w-2xl mx-auto">
-          <Motion
-            initial={{ opacity: 0, y: 20 }}
-            animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-          >
-            <form onSubmit={handleSubmit} className="space-y-6">
-              <div className="grid md:grid-cols-2 gap-6">
-                <div>
-                  <label htmlFor="name" className="block text-sm font-medium mb-2 text-foreground/80">
-                    Name
-                  </label>
-                  <input
-                    type="text"
-                    id="name"
-                    name="name"
-                    value={formState.name}
-                    onChange={handleChange}
-                    className={inputStyles}
-                    placeholder="Your name"
-                    required
-                  />
-                </div>
-                <div>
-                  <label htmlFor="email" className="block text-sm font-medium mb-2 text-foreground/80">
-                    Email
-                  </label>
-                  <input
-                    type="email"
-                    id="email"
-                    name="email"
-                    value={formState.email}
-                    onChange={handleChange}
-                    className={inputStyles}
-                    placeholder="your@email.com"
-                    required
-                  />
-                </div>
-              </div>
-
-              <div>
-                <label htmlFor="company" className="block text-sm font-medium mb-2 text-foreground/80">
-                  Company
-                </label>
-                <input
-                  type="text"
-                  id="company"
-                  name="company"
-                  value={formState.company}
-                  onChange={handleChange}
-                  className={inputStyles}
-                  placeholder="Your company name"
-                />
-              </div>
-
-              <div>
-                <label htmlFor="message" className="block text-sm font-medium mb-2 text-foreground/80">
-                  Message
-                </label>
-                <textarea
-                  id="message"
-                  name="message"
-                  value={formState.message}
-                  onChange={handleChange}
-                  rows={4}
-                  className={`${inputStyles} resize-none`}
-                  placeholder="Tell us about your project"
-                  required
-                />
-              </div>
-
-              <div className="text-center">
-                <button
-                  type="submit"
-                  className="px-8 py-4 bg-foreground text-background hover:bg-foreground/90 transition-colors rounded-lg font-medium inline-flex items-center gap-2"
+            <div className="grid md:grid-cols-2 gap-12 max-w-2xl mx-auto">
+              <Motion
+                initial={{ opacity: 0, y: 20 }}
+                animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+                transition={{ duration: 0.6, delay: 0.2 }}
+                className="p-8 border border-border rounded-xl hover:bg-hover/5 transition-all duration-300"
+              >
+                <div className="text-3xl mb-4">📧</div>
+                <h3 className="text-xl font-bold mb-3">Direct Communication</h3>
+                <p className="text-muted mb-6">
+                  For immediate inquiries and strategic discussions.
+                </p>
+                <a 
+                  href="mailto:contact@wolrix.com" 
+                  className="text-foreground hover:text-foreground/80 transition-colors inline-flex items-center gap-2 font-medium"
                 >
-                  Initiate Connection
+                  contact@wolrix.com
                   <svg 
-                    className="w-5 h-5" 
+                    className="w-4 h-4" 
                     fill="none" 
                     stroke="currentColor" 
                     viewBox="0 0 24 24"
@@ -138,27 +56,57 @@ export function ContactSection() {
                       d="M14 5l7 7m0 0l-7 7m7-7H3" 
                     />
                   </svg>
-                </button>
-              </div>
-            </form>
-          </Motion>
+                </a>
+              </Motion>
 
-          <Motion
-            initial={{ opacity: 0 }}
-            animate={isInView ? { opacity: 1 } : { opacity: 0 }}
-            transition={{ duration: 0.8, delay: 0.4 }}
-          >
-            <div className="mt-16 text-center text-muted">
-              <p className="mb-4">Prefer direct communication?</p>
-              <a 
-                href="mailto:contact@wolrix.com" 
-                className="text-foreground hover:text-foreground/80 transition-colors"
+              <Motion
+                initial={{ opacity: 0, y: 20 }}
+                animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+                transition={{ duration: 0.6, delay: 0.3 }}
+                className="p-8 border border-border rounded-xl hover:bg-hover/5 transition-all duration-300"
               >
-                contact@wolrix.com
-              </a>
+                <div className="text-3xl mb-4">📅</div>
+                <h3 className="text-xl font-bold mb-3">Strategic Consultation</h3>
+                <p className="text-muted mb-6">
+                  Schedule a focused discussion about your digital future.
+                </p>
+                <a 
+                  href="https://calendly.com/urosh-belgrade/60min" 
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-foreground hover:text-foreground/80 transition-colors inline-flex items-center gap-2 font-medium"
+                >
+                  Schedule a Call
+                  <svg 
+                    className="w-4 h-4" 
+                    fill="none" 
+                    stroke="currentColor" 
+                    viewBox="0 0 24 24"
+                  >
+                    <path 
+                      strokeLinecap="round" 
+                      strokeLinejoin="round" 
+                      strokeWidth={2} 
+                      d="M14 5l7 7m0 0l-7 7m7-7H3" 
+                    />
+                  </svg>
+                </a>
+              </Motion>
             </div>
-          </Motion>
-        </div>
+          </div>
+        </Motion>
+
+        <Motion
+          initial={{ opacity: 0 }}
+          animate={isInView ? { opacity: 1 } : { opacity: 0 }}
+          transition={{ duration: 0.8, delay: 0.4 }}
+        >
+          <div className="mt-16 text-center">
+            <p className="text-muted italic">
+              &ldquo;Excellence in digital transformation begins with a conversation.&rdquo;
+            </p>
+          </div>
+        </Motion>
       </div>
     </section>
   );
