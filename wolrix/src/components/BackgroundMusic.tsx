@@ -5,7 +5,7 @@ import { motion } from 'framer-motion';
 
 export function BackgroundMusic() {
   const [isPlaying, setIsPlaying] = useState(false);
-  const [setIsVisible] = useState(true);
+  const [isVisible, setIsVisible] = useState(true);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   let hideTimeout: NodeJS.Timeout;
 
@@ -61,7 +61,7 @@ export function BackgroundMusic() {
       className="fixed bottom-8 right-8 z-50 p-4 rounded-full bg-background/80 backdrop-blur-sm border border-border hover:bg-hover/20"
       onClick={togglePlay}
       initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
+      animate={{ opacity: isVisible ? 1 : 0 }}
       whileHover={{ scale: 1.1 }}
       whileTap={{ scale: 0.95 }}
     >
