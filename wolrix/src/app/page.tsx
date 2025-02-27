@@ -13,14 +13,15 @@ import { HeroParticles } from '@/components/HeroParticles';
 import { PhilosophySection } from '@/components/sections/PhilosophySection';
 import { SectionWrapper } from '@/components/SectionWrapper';
 import { MagneticButton } from '@/components/MagneticButton';
+import { BackgroundMusic } from '@/components/BackgroundMusic';
 
 export default function Home() {
   return (
     <ParallaxProvider>
       <Navbar />
+      <BackgroundMusic />
       
       <main className="relative content-spacing">
-        {/* Hero Section */}
         <section className="min-h-screen relative overflow-hidden">
           {/* 3D Background */}
           <div className="absolute inset-0 z-0">

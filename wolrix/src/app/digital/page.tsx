@@ -10,11 +10,13 @@ import { ServicesSection } from '@/components/sections/ServicesSection';
 import { WhyDigitalSection } from '@/components/sections/WhyDigitalSection';
 import { ContactSection } from '@/components/sections/ContactSection';
 import { PersonalNoteSection } from '@/components/sections/PersonalNoteSection';
+import { BackgroundMusic } from '@/components/BackgroundMusic';
 
 export default function DigitalPage() {
   return (
     <>
-      <Navbar />
+      <Navbar />      
+      <BackgroundMusic />
       
       <main className="relative">
         {/* Hero Section */}

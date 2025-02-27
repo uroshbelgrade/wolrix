@@ -25,7 +25,10 @@ export default {
       maxWidth: {
         '8xl': '88rem',
         '9xl': '96rem',
-      }
+      },
+      backgroundImage: {
+        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
+      },
     },
   },
   plugins: [],
