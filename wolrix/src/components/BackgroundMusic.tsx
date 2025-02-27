@@ -5,7 +5,7 @@ import { motion } from 'framer-motion';
 
 export function BackgroundMusic() {
   const [isPlaying, setIsPlaying] = useState(false);
-  const [isVisible, setIsVisible] = useState(true);
+  const [setIsVisible] = useState(true);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   let hideTimeout: NodeJS.Timeout;
 
