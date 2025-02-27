@@ -16,7 +16,8 @@ export function CompaniesSection() {
       description: "Elite education and leadership development through premium courses, training, and transformative speaking events.",
       features: ["Executive Training", "Digital Leadership", "Industry Expertise"],
       link: "/blueprint",
-      gradient: "from-blue-900 to-blue-800"
+      gradient: "from-blue-900 to-blue-800",
+      status: "Coming Q3 2024"
     },
     {
       name: "Wolrix Digital",
@@ -24,7 +25,8 @@ export function CompaniesSection() {
       description: "Cutting-edge development and strategic marketing solutions that define industry standards.",
       features: ["Enterprise Solutions", "Digital Transformation", "Brand Evolution"],
       link: "/digital",
-      gradient: "from-indigo-900 to-indigo-800"
+      gradient: "from-indigo-900 to-indigo-800",
+      status: "Active"
     },
     {
       name: "Wolrix Ventures",
@@ -32,7 +34,8 @@ export function CompaniesSection() {
       description: "Strategic investment arm focused on acquiring and scaling high-potential digital assets.",
       features: ["Portfolio Growth", "Market Analysis", "Strategic Partnerships"],
       link: "/ventures",
-      gradient: "from-violet-900 to-violet-800"
+      gradient: "from-violet-900 to-violet-800",
+      status: "Coming Q4 2024"
     }
   ];
 
@@ -68,7 +71,8 @@ export function CompaniesSection() {
                 <div className="absolute inset-0 bg-primary/10 opacity-0 group-hover:opacity-100 transition-opacity rounded-2xl" />
                 <div className="relative z-10">
                   <h3 className="text-2xl font-bold mb-2">{company.name}</h3>
-                  <p className="text-accent mb-4 font-medium">{company.tagline}</p>
+                  <p className="text-accent mb-1 font-medium">{company.tagline}</p>
+                  <p className="text-xs text-accent/80 mb-4">{company.status}</p>
                   <p className="text-text-muted mb-6">{company.description}</p>
                   
                   <ul className="space-y-3 mb-8">
@@ -82,9 +86,13 @@ export function CompaniesSection() {
 
                   <Link
                     href={company.link}
-                    className="inline-flex items-center text-accent hover:text-accent-hover transition-colors gap-2 group"
+                    className={`inline-flex items-center ${
+                      company.status === 'Active' 
+                        ? 'text-accent hover:text-accent-hover' 
+                        : 'text-accent/80'
+                    } transition-colors gap-2 group`}
                   >
-                    Learn more
+                    {company.status === 'Active' ? 'Learn more' : 'View preview'}
                     <svg 
                       className="w-4 h-4 transform transition-transform group-hover:translate-x-1" 
                       fill="none" 
